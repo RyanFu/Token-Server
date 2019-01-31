@@ -1,8 +1,8 @@
 ### OSX ###
 .DS_Store
 
-### Dist ###
 bin
+pkg
 
 # Created by https://www.gitignore.io/api/go,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=go,visualstudiocode
@@ -22,8 +22,9 @@ bin
 *.out
 
 ### Go Patch ###
-/vendor/
-/Godeps/
+vendor
+Godeps
+.cache
 
 ### VisualStudioCode ###
 .vscode/*
