@@ -9,8 +9,11 @@
 govendor sync
 
 # Build
-go install
+go install main
 
 # Run
 ./bin/main
+
+# Show helps
+./bin/main -h
 ```
