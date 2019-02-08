@@ -61,7 +61,7 @@ func (s *Server) init() {
 		log.Fatalln("Redis: ", err)
 	}
 	token, err := s.load()
-	if err != redis.Nil {
+	if err != nil && err != redis.Nil {
 		log.Fatalln("Load: ", err)
 	}
 	s.token = token
