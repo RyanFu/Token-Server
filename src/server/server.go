@@ -65,6 +65,7 @@ func (s *Server) init() {
 		log.Fatalln("Load: ", err)
 	}
 	s.token = token
+	s.mux.Lock()
 	if !s.valid() {
 		newToken := s.fetch()
 		s.save(newToken)
@@ -72,6 +73,7 @@ func (s *Server) init() {
 	} else {
 		s.timer = time.NewTimer(time.Second * time.Duration(s.token.Timestamp+int64(s.token.Expires)-time.Now().Unix()-100))
 	}
+	s.mux.Unlock()
 	s.schedule()
 }
 
@@ -79,9 +81,11 @@ func (s *Server) schedule() {
 	go func() {
 		for {
 			<-s.timer.C
+			s.mux.Lock()
 			newToken := s.fetch()
 			s.save(newToken)
 			s.timer.Reset(time.Second * time.Duration(s.token.Expires-100))
+			s.mux.Unlock()
 		}
 	}()
 }
@@ -138,8 +142,6 @@ func (s *Server) save(token Token) {
 	if err != nil {
 		log.Println(err)
 	}
-	s.mux.Lock()
-	defer s.mux.Unlock()
 	s.token = token
 }
 
